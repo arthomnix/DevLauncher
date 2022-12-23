@@ -112,6 +112,7 @@ public:
     virtual QStringList processMinecraftArgs(AuthSessionPtr account, MinecraftServerTargetPtr serverToJoin) const;
 
     virtual JavaVersion getJavaVersion() const;
+    virtual QString getJavaArchitecture() const;
 
 protected:
     QMap<QString, QString> createCensorFilterFromSession(AuthSessionPtr session);

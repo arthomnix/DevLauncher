@@ -32,10 +32,18 @@ void VerifyJavaInstall::executeTask() {
     auto m_inst = std::dynamic_pointer_cast<MinecraftInstance>(m_parent->instance());
 
     auto javaVersion = m_inst->getJavaVersion();
+    auto javaArch = m_inst->getJavaArchitecture();
     auto minecraftComponent = m_inst->getPackProfile()->getComponent("net.minecraft");
 
+    // ARM Java is currently unsupported
+    if (javaArch == "ARM") {
+        emit logLine("MultiMC does not currently support launching the game with ARM versions of Java. If you are using an Apple Silicon Mac, please use an x86_64 Java install through Rosetta 2.",
+                     MessageLevel::Fatal);
+        emitFailed(tr("MultiMC does not currently support launching the game with ARM versions of Java. If you are using an Apple Silicon Mac, please use an x86_64 Java install through Rosetta 2."));
+        return;
+    }
     // Java 17 requirement
-    if (minecraftComponent->getReleaseDateTime() >= g_VersionFilterData.java17BeginsDate) {
+    else if (minecraftComponent->getReleaseDateTime() >= g_VersionFilterData.java17BeginsDate) {
         if (javaVersion.major() < 17) {
             emit logLine("Minecraft 1.18 Pre Release 2 and above require the use of Java 17",
                          MessageLevel::Fatal);

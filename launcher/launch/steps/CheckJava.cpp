@@ -117,11 +117,15 @@ void CheckJava::checkJavaFinished(JavaCheckResult result)
 
 void CheckJava::printJavaInfo(const QString& version, const QString& architecture, const QString & vendor)
 {
+    bool javaIsArm = architecture == "ARM";
+    if (javaIsArm) {
+        emit logLine(QString("Java is version %1, using ARM architecture, from %2.\n\n").arg(version, vendor), MessageLevel::Launcher);
+    }
     emit logLine(QString("Java is version %1, using %2-bit architecture, from %3.\n\n").arg(version, architecture, vendor), MessageLevel::Launcher);
-    printSystemInfo(true, architecture == "64");
+    printSystemInfo(true, architecture == "64", javaIsArm);
 }
 
-void CheckJava::printSystemInfo(bool javaIsKnown, bool javaIs64bit)
+void CheckJava::printSystemInfo(bool javaIsKnown, bool javaIs64bit, bool javaIsArm)
 {
     auto cpu64 = Sys::isCPU64bit();
     auto system64 = Sys::isSystem64bit();
@@ -131,7 +135,7 @@ void CheckJava::printSystemInfo(bool javaIsKnown, bool javaIs64bit)
     }
     if(javaIsKnown)
     {
-        if(javaIs64bit != system64)
+        if(javaIs64bit != system64 && !javaIsArm)
         {
             emit logLine(QString("Your Java architecture is not matching your system architecture. You might want to install a 64bit Java version.\n\n"), MessageLevel::Error);
         }

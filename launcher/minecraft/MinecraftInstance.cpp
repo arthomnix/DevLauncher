@@ -968,6 +968,11 @@ JavaVersion MinecraftInstance::getJavaVersion() const
     return JavaVersion(settings()->get("JavaVersion").toString());
 }
 
+QString MinecraftInstance::getJavaArchitecture() const
+{
+    return settings()->get("JavaArchitecture").toString();
+}
+
 std::shared_ptr<ModFolderModel> MinecraftInstance::loaderModList() const
 {
     if (!m_loader_mod_list)
