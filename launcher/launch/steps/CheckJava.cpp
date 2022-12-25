@@ -88,7 +88,7 @@ void CheckJava::checkJavaFinished(JavaCheckResult result)
             emit logLine(QString("Could not start java:"), MessageLevel::Error);
             emit logLines(result.errorLog.split('\n'), MessageLevel::Error);
             emit logLine("\nCheck your MultiMC Java settings.", MessageLevel::Launcher);
-            printSystemInfo(false, false);
+            printSystemInfo(false, false, false);
             emitFailed(QString("Could not start java!"));
             return;
         }
@@ -97,7 +97,7 @@ void CheckJava::checkJavaFinished(JavaCheckResult result)
             emit logLine(QString("Java checker returned some invalid data MultiMC doesn't understand:"), MessageLevel::Error);
             emit logLines(result.outLog.split('\n'), MessageLevel::Warning);
             emit logLine("\nMinecraft might not start properly.", MessageLevel::Launcher);
-            printSystemInfo(false, false);
+            printSystemInfo(false, false, false);
             emitSucceeded();
             return;
         }
